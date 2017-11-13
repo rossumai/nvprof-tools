@@ -3,8 +3,12 @@
 Tools to help working with nvprof SQLite files, specifically for profiling
 scripts to train deep learning models. The files can be big and thus slow to scp and work with in NVVP. This tool is aimed in extracting the small bits of important information and make profiling in NVVP faster.
 
+You can remove a big number of unimportant events and take a small time slice, so that you can shrink the sqlite database a few MBs.
+
 - Author: Bohumír Zámečník <bohumir.zamecnik@gmail.com>, [Rossum](https://rossum.ai)
 - License: MIT
+
+![sliced nvprof in NVVP](https://cdn.pbrd.co/images/GTsUg7h.png)
 
 ## Installing
 
@@ -69,6 +73,13 @@ $ nvprof_tools truncate foo.sqlite
 
 Eg. we shrinked a database from 29 MB to 8 MB.
 
+### Slice only a small time range
+
+```
+# keep only events between 5 and 6 seconds
+$ nvprof_tools slice foo.sqlite -s 5.0 -e 6.0
+```
+
 ### More information
 
-[docs/info.md]
+[More information](docs/info.md)
