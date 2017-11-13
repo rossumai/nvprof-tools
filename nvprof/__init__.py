@@ -75,15 +75,14 @@ def biggest_tables(conn):
     return sorted([(n,s) for (n,s) in ts.items() if s > 0],
         key=lambda item: item[1], reverse=True)
 
-def compute_utilization(conn, gpu_count):
+def compute_utilization(conn):
     # TODO: do not count time in overlapping kernels twice
     # It would be better to compute utitlization on small intervals and then
     # aggregate with median. That would remove the effect of long initialization
     # times.
     c = conn.cursor()
-    c.execute("SELECT SUM(CAST(1.0 * end - 1.0 * start as INT)), MAX(end) - MIN(start) FROM CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL")
-    compute_time, total_time = c.fetchone()
-    return compute_time / total_time / gpu_count
+    c.execute("SELECT deviceId, 100. * SUM(1.0 * end - 1.0 * start) / (MAX(end) - MIN(start)) FROM CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL GROUP BY deviceId")
+    return dict(c.fetchall())
 
 def gpu_count(conn):
     c = conn.cursor()
@@ -91,9 +90,12 @@ def gpu_count(conn):
     return c.fetchone()[0]
 
 def print_info(conn):
-    gpus = gpu_count(conn)
-    print("Number of GPUs: %d" % gpus)
-    print("Compute utilization: %0.2f %%" % (100 * compute_utilization(conn, gpus)))
+    print("Number of GPUs: %d" % gpu_count(conn))
+    utilization_per_device = compute_utilization(conn)
+    mean_utilization = sum(utilization_per_device.values()) / len(utilization_per_device)
+    print("Compute utilization (mean): %0.2f %%" % mean_utilization)
+    for dev, util in utilization_per_device.items():
+        print('  GPU %d: %0.2f %%' % (dev, util))
     print('Total time: %.03f sec' % total_time(conn))
     ts = biggest_tables(conn)
     print('Total number of events:', sum(s for (n, s) in ts))
