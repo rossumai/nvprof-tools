@@ -23,15 +23,29 @@ $ pip install -e .
 
 ```
 $ nvprof_tools --help
-usage: nvprof_tools [-h] {info,truncate} ...
+usage: nvprof_tools [-h] {info,truncate,slice} ...
 
 NVIDIA Profiler tools
 
 positional arguments:
-  {info,truncate}
+  {info,truncate,slice}
 
 optional arguments:
-  -h, --help       show this help message and exit
+  -h, --help            show this help message and exit
+```
+
+```
+$ nvprof_tools slice --help
+usage: nvprof_tools slice [-h] [-s START] [-e END] db_file
+
+positional arguments:
+  db_file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -s START, --start START
+                        start time (sec)
+  -e END, --end END     end time (sec)
 ```
 
 ### Summary about the file
@@ -43,7 +57,9 @@ It can show:
 
 ```
 $ nvprof_tools info foo.sqlite
-Total time: 6.722 sec
+Number of GPUs: 1
+Compute utilization: 10.07 %
+Total time: 6.659 sec
 Total number of events: 516874
 Events by table:
 CUPTI_ACTIVITY_KIND_RUNTIME : 348080
@@ -57,8 +73,8 @@ CUPTI_ACTIVITY_KIND_OVERHEAD : 309
 CUPTI_ACTIVITY_KIND_STREAM : 12
 CUPTI_ACTIVITY_KIND_DEVICE_ATTRIBUTE : 8
 CUPTI_ACTIVITY_KIND_NAME : 1
-CUPTI_ACTIVITY_KIND_DEVICE : 1
 CUPTI_ACTIVITY_KIND_CONTEXT : 1
+CUPTI_ACTIVITY_KIND_DEVICE : 1
 ```
 
 ### Remove unnecessary events

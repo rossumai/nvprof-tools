@@ -75,7 +75,25 @@ def biggest_tables(conn):
     return sorted([(n,s) for (n,s) in ts.items() if s > 0],
         key=lambda item: item[1], reverse=True)
 
+def compute_utilization(conn, gpu_count):
+    # TODO: do not count time in overlapping kernels twice
+    # It would be better to compute utitlization on small intervals and then
+    # aggregate with median. That would remove the effect of long initialization
+    # times.
+    c = conn.cursor()
+    c.execute("SELECT SUM(CAST(1.0 * end - 1.0 * start as INT)), MAX(end) - MIN(start) FROM CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL")
+    compute_time, total_time = c.fetchone()
+    return compute_time / total_time / gpu_count
+
+def gpu_count(conn):
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM CUPTI_ACTIVITY_KIND_DEVICE")
+    return c.fetchone()[0]
+
 def print_info(conn):
+    gpus = gpu_count(conn)
+    print("Number of GPUs: %d" % gpus)
+    print("Compute utilization: %0.2f %%" % (100 * compute_utilization(conn, gpus)))
     print('Total time: %.03f sec' % total_time(conn))
     ts = biggest_tables(conn)
     print('Total number of events:', sum(s for (n, s) in ts))
