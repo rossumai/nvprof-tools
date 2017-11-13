@@ -10,8 +10,6 @@ setup(name='nvprof',
       packages=['nvprof'],
       zip_safe=False,
       install_requires=[
-         'sqlite',
-         'numpy',
       ],
       setup_requires=['setuptools-markdown'],
       long_description_markdown_filename='README.md',
@@ -28,7 +26,6 @@ setup(name='nvprof',
 
           'License :: OSI Approved :: MIT License',
 
-          'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 3',
 
           'Operating System :: POSIX :: Linux',
