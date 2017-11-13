@@ -14,5 +14,5 @@
     - info about memcpy
 - other stuff
   - [x] setup.py
-  - [ ] object interface
+  - [x] object interface
   - [ ] command-line interface

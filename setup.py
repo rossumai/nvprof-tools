@@ -29,4 +29,9 @@ setup(name='nvprof',
           'Programming Language :: Python :: 3',
 
           'Operating System :: POSIX :: Linux',
-      ])
+      ],
+      entry_points={
+          'console_scripts': [
+              'nvprof_tools = nvprof.__main__:main'
+          ]
+      },)
