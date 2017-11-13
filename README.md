@@ -1,4 +1,4 @@
-# nvprof - Python tools for NVIDIA Profiler
+# nvprof-tools - Python tools for NVIDIA Profiler
 
 Tools to help working with nvprof SQLite files, specifically for profiling
 scripts to train deep learning models. The files can be big and thus slow to scp and work with in NVVP. This tool is aimed in extracting the small bits of important information and make profiling in NVVP faster.
