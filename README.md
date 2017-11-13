@@ -39,7 +39,7 @@ It can show:
 
 ```
 $ nvprof_tools info foo.sqlite
-Total time: 3.300 sec
+Total time: 6.722 sec
 Total number of events: 516874
 Events by table:
 CUPTI_ACTIVITY_KIND_RUNTIME : 348080
@@ -68,3 +68,7 @@ $ nvprof_tools truncate foo.sqlite
 ```
 
 Eg. we shrinked a database from 29 MB to 8 MB.
+
+### More information
+
+[docs/info.md]

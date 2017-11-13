@@ -83,3 +83,59 @@ For profiling deep learning training scripts the important tables are:
 - CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL
 - CUPTI_ACTIVITY_KIND_MEMCPY
 - CUPTI_ACTIVITY_KIND_CUDA_EVENT
+
+### Table schemata
+
+```sql
+CREATE TABLE CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL(
+  _id_ INTEGER PRIMARY KEY AUTOINCREMENT,
+  cacheConfig BLOB NOT NULL,
+  sharedMemoryConfig INT NOT NULL,
+  registersPerThread INT NOT NULL,
+  partitionedGlobalCacheRequested INT NOT NULL,
+  partitionedGlobalCacheExecuted INT NOT NULL,
+  start INT NOT NULL,
+  end INT NOT NULL,
+  completed INT NOT NULL,
+  deviceId INT NOT NULL,
+  contextId INT NOT NULL,
+  streamId INT NOT NULL,
+  gridX INT NOT NULL,
+  gridY INT NOT NULL,
+  gridZ INT NOT NULL,
+  blockX INT NOT NULL,
+  blockY INT NOT NULL,
+  blockZ INT NOT NULL,
+  staticSharedMemory INT NOT NULL,
+  dynamicSharedMemory INT NOT NULL,
+  localMemoryPerThread INT NOT NULL,
+  localMemoryTotal INT NOT NULL,
+  correlationId INT NOT NULL,
+  gridId INT NOT NULL,
+  name INT NOT NULL)
+```
+
+Example row:
+
+```
+1, b'\x00', 1, 32, 2, 2, 1509203998387113883, 1509203998387134171, 1509203998387134171, 0, 1, 14, 44, 1, 1, 1024, 1, 1, 0, 0, 0, 52625408, 214, 1, 3
+```
+
+The interesting fields are `start` and `end`. They contain the timestamp in nanoseconds. Eg. this event took 20.288 microseconds.
+
+### Tables with start/end times
+
+- `CUPTI_ACTIVITY_KIND_CDP_KERNEL`
+- `CUPTI_ACTIVITY_KIND_CONCURRENT_KERNEL`
+- `CUPTI_ACTIVITY_KIND_DRIVER`
+- `CUPTI_ACTIVITY_KIND_KERNEL`
+- `CUPTI_ACTIVITY_KIND_MEMCPY`
+- `CUPTI_ACTIVITY_KIND_MEMCPY2`
+- `CUPTI_ACTIVITY_KIND_MEMSET`
+- `CUPTI_ACTIVITY_KIND_OPENACC_DATA`
+- `CUPTI_ACTIVITY_KIND_OPENACC_LAUNCH`
+- `CUPTI_ACTIVITY_KIND_OPENACC_OTHER`
+- `CUPTI_ACTIVITY_KIND_OVERHEAD`
+- `CUPTI_ACTIVITY_KIND_RUNTIME`
+- `CUPTI_ACTIVITY_KIND_SYNCHRONIZATION`
+- `CUPTI_ACTIVITY_KIND_UNIFIED_MEMORY_COUNTER`

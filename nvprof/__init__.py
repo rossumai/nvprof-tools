@@ -5,11 +5,40 @@ import sys
 
 table_prefix = 'CUPTI_ACTIVITY_KIND_'
 
-def total_time(conn, table='CUPTI_ACTIVITY_KIND_MEMCPY'):
+def tables_with_prefix(short_tables):
+    return ['%s%s' % (table_prefix, table) for table in short_tables]
+
+def total_time(conn):
+    # tables with start/end times
+    tables = tables_with_prefix([
+    'CDP_KERNEL',
+    'CONCURRENT_KERNEL',
+    'DRIVER',
+    'KERNEL',
+    'MEMCPY',
+    'MEMCPY2',
+    'MEMSET',
+    'OPENACC_DATA',
+    'OPENACC_LAUNCH',
+    'OPENACC_OTHER',
+    'OVERHEAD',
+    'RUNTIME',
+    'SYNCHRONIZATION',
+    'UNIFIED_MEMORY_COUNTER'])
+
+    times = []
     c = conn.cursor()
-    c.execute('SELECT (1.0 * MAX(end) - 1.0 * MIN(start)) * 1e-9 FROM {}'.format(table))
-    total_time = c.fetchone()[0]
-    print('Total time: %.03f sec' % total_time)
+    for table in tables:
+        c.execute('SELECT MIN(start), MAX(end) FROM {}'.format(table))
+        start, end = c.fetchone()
+        if start is not None and end is not None:
+            times.append((start, end))
+    print(times)
+    starts, ends = zip(*times)
+    # times in nanoseconds
+    start, end = min(starts), max(ends)
+    total_time_sec = (end - start) * 1e-9
+    return total_time_sec
 
 def list_tables(conn):
     c = conn.cursor()
@@ -34,7 +63,7 @@ def biggest_tables(conn):
         key=lambda item: item[1], reverse=True)
 
 def print_info(conn):
-    total_time(conn)
+    print('Total time: %.03f sec' % total_time(conn))
     ts = biggest_tables(conn)
     print('Total number of events:', sum(s for (n, s) in ts))
     print('Events by table:')

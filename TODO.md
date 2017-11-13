@@ -2,7 +2,6 @@
 
 - features:
   - [x] total time
-    - [ ] better take min/max time from all important tables and compute the difference from that
   - [x] remove events from not interesting tables
     - [ ] save to new file
   - [ ] slice events from a time range
