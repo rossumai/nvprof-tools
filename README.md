@@ -54,6 +54,8 @@ It can show:
 
 - total time (can be used to decide which time slice to take in nvvp)
 - number of events in the tables sorted from highest
+- compute utilization percentage
+- number of GPUs
 
 ```
 $ nvprof_tools info foo.sqlite
@@ -75,6 +77,19 @@ CUPTI_ACTIVITY_KIND_DEVICE_ATTRIBUTE : 8
 CUPTI_ACTIVITY_KIND_NAME : 1
 CUPTI_ACTIVITY_KIND_CONTEXT : 1
 CUPTI_ACTIVITY_KIND_DEVICE : 1
+```
+
+In case of multiple GPUs compute utilization is calculated for each device:
+
+```
+Number of GPUs: 4
+Compute utilization (mean): 43.04 %
+  GPU 0: 42.86 %
+  GPU 1: 42.34 %
+  GPU 2: 43.42 %
+  GPU 3: 43.55 %
+Total time: 35.041 sec
+Total number of events: 5670557
 ```
 
 ### Remove unnecessary events
