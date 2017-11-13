@@ -33,7 +33,8 @@ test_pypi_register:
 	python setup.py register -r pypitest
 
 test_publish:
-	python setup.py sdist upload -r pypitest
+	#python setup.py sdist upload -r pypitest
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 test_install:
-	pip install --verbose --index-url https://testpypi.python.org/pypi/ nvprof
+	pip install --verbose --index-url https://test.pypi.org/simple/ nvprof

@@ -12,10 +12,15 @@ You can remove a big number of unimportant events and take a small time slice, s
 
 ## Installing
 
-Install package `nvprof`:
+Install package `nvprof` - for just using it:
 
 ```
-# for development
+$ pip install nvprof
+```
+
+...or for development:
+
+```
 $ pip install -e .
 ```
 
