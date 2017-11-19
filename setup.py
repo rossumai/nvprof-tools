@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='nvprof',
-      version='0.1',
+      version='0.2',
       description='NVIDIA Profier tools',
       url='https://github.com/rossumai/nvprof-tools',
       author='Bohumir Zamecnik',
