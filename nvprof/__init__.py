@@ -124,7 +124,10 @@ def slice_events(conn, start_ns, end_ns):
     c = conn.cursor()
     for table in tables_with_prefix(interval_tables):
         c.execute('DELETE FROM {} WHERE end < {} OR start > {}'.format(table, abs_start_ns, abs_end_ns))
-    c.execute('VACUUM')
+    # https://github.com/rossumai/nvprof-tools/issues/1
+    conn.isolation_level = None
+    conn.execute('VACUUM')
+    conn.isolation_level = '' # <- note that this is the default value of isolation_level
     conn.commit()
 
 def with_conn(db_file, func):
